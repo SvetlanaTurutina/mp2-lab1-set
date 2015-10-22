@@ -12,7 +12,7 @@
 TBitField::TBitField(int len) //конструктор
 {
 	if (len < 0)
-		throw   "Incorrect entries";
+		throw   "Enter error";
 	if (len == 0)
 	{
 		BitLen = 0;
@@ -110,6 +110,7 @@ int TBitField::operator==(const TBitField &bf) const // сравнение
 		{ 
 			res = 0; break; 
 		}
+	
   return res;
 }
 
@@ -124,7 +125,6 @@ int TBitField::operator!=(const TBitField &bf) const // сравнение
 		res = 1; break;
 	}
 	return res;
-  //return 0;
 }
 
 TBitField TBitField::operator|(const TBitField &bf) // операция "или"
@@ -132,18 +132,46 @@ TBitField TBitField::operator|(const TBitField &bf) // операция "или"
 	int i, len = BitLen;
 	if (bf.BitLen > len) len = bf.BitLen;
 	TBitField temp(len);
-	for (int i = 0; i < MemLen; i++) temp.pMem[i] = pMem[i];
-	for (int i = 0; i < bf.MemLen; i++) temp.pMem[i] |= bf.pMem[i];
+
+	
+	for (int i = 0; i < MemLen; i++)
+		temp.pMem[i] = pMem[i];
+
+	for (int i = 0; i < bf.MemLen; i++)
+		temp.pMem[i] |= bf.pMem[i];
+	/*for (int i = 0; i<BitLen; ++i)
+	if (GetBit(i))
+		temp.SetBit(i);
+	for (int i = 0; i<bf.BitLen; ++i)
+	if (bf.GetBit(i))
+		temp.SetBit(i);*/
 	return temp;
 }
 
 TBitField TBitField::operator&(const TBitField &bf) // операция "и" 
 {
 	int i, len = BitLen;
-	if (bf.BitLen > len) len = bf.BitLen;
+	if (bf.BitLen > len) 
+		len = bf.BitLen;
+	
 	TBitField temp(len);
-	for (int i = 0; i < MemLen; i++) temp.pMem[i] = pMem[i];
-	for (int i = 0; i < bf.MemLen; i++) temp.pMem[i] &= bf.pMem[i];
+	
+	for (int i = 0; i < MemLen; i++)
+		temp.pMem[i] = pMem[i];
+
+	for (int i = 0; i < bf.MemLen; i++)
+		temp.pMem[i] &= bf.pMem[i];
+
+
+
+
+	//TBitField temp(len);
+	//for (int i = 0; i<BitLen; ++i)
+	//	if (GetBit(i))
+	//		temp.SetBit(i);
+	//for (int i = 0; i<bf.BitLen; ++i)
+	//	if (bf.GetBit(i)==0)
+	//		temp.ClrBit(i);
 	return temp;
 }
 
@@ -166,7 +194,7 @@ TBitField TBitField::operator~(void) // отрицание
 
 // ввод/вывод
 
-istream &operator>>(istream &istr, TBitField &bf) // ввод исправить!
+istream &operator>>(istream &istr, TBitField &bf) // ввод 
 {//формат данных - последовательность 0 и 1 без пробелов, начальные пробелы игнорируются, при не 0 и 1 - завершение ввода
 	//int i, l = 0;
 	//char ch;
@@ -193,7 +221,7 @@ istream &operator>>(istream &istr, TBitField &bf) // ввод исправить
 	int i, l = 0;
 	int n = 0;			// номер бита
 	char line[128];
-	char a[3];
+	//char a[3];
 	do
 	{
 		istr >> line;

@@ -295,3 +295,27 @@ TEST(TSet, check_negation_operator)
 
   EXPECT_EQ(expSet, set1);
 }
+
+TEST(TSet, can_compare_two_sets_of_non_equal_size_after_multiple_operations)
+{
+  const int size1 = 15, size2 = 7;
+  TSet set1(size1), set2(size2), set3(size1), set4(size1), expSet(size1);
+  // set1 = {0, 2, 3}
+  set1.InsElem(0);
+  set1.InsElem(2);
+  set1.InsElem(3);
+  // set2 = {1, 2}
+  set2.InsElem(1);
+  set2.InsElem(2);
+
+  // set3 = 0 2 3 4 5 6 size = 15
+  set3 = set1 + (~set2);
+    
+  set4 = ~set3;
+  
+  set4 = set4 * set2;
+  // expSet = {1}
+  expSet.InsElem(1);
+
+  EXPECT_EQ(1, expSet == set4);
+}

@@ -11,7 +11,7 @@ TSet::TSet(int mp) : MaxPower(mp), BitField(mp)
 {
 	if (mp <= 0)
 	{
-		throw "Incorrect entries";
+		throw "Enter error";
 	}
 
 }
@@ -40,16 +40,22 @@ int TSet::GetMaxPower(void) const // получить макс. к-во эл-т�
 
 int TSet::IsMember(const int Elem) const // элемент множества?
 { 
+	if (Elem < 0 || Elem >= MaxPower)
+		throw "Element is out of range";
     return BitField.GetBit(Elem);
 }
 
 void TSet::InsElem(const int Elem) // включение элемента множества
 {
+	if (Elem < 0 || Elem >= MaxPower)
+		throw "Element is out of range";
 	BitField.SetBit(Elem);
 }
 
 void TSet::DelElem(const int Elem) // исключение элемента множества
 {
+	if (Elem < 0 || Elem >= MaxPower)
+		throw "Element is out of range";
 	BitField.ClrBit(Elem);
 }
 
@@ -80,13 +86,18 @@ TSet TSet::operator+(const TSet &s) // объединение
 
 TSet TSet::operator+(const int Elem) // объединение с элементом
 {
-	
-	return Elem;
+	if (Elem < 0 || Elem >= MaxPower)
+		throw "Element is out of range";
+	BitField.SetBit(Elem);
+	return *this;
 }
 
 TSet TSet::operator-(const int Elem) // разность с элементом
 {
-	return Elem;
+	if (Elem < 0 || Elem >= MaxPower)
+		throw "Element is out of range";
+	BitField.ClrBit(Elem);
+	return *this;
 }
 
 TSet TSet::operator*(const TSet &s) // пересечение
@@ -122,13 +133,12 @@ ostream& operator<<(ostream &ostr, const TSet &s) // вывод
 	int i, n;
 	char ch = ' ';
 	ostr << "{";
-	//n = s.GetMaxPower;
-	for (int i = 0; i < n; i++)
-	if (s.IsMember(i))
-	{
-		ostr << ch << ' ' << i; 
-		ch = ',';
-	}
+	for (int i = 0; i < s.GetMaxPower(); i++)
+		if (s.IsMember(i))
+		{
+			ostr << ch << ' ' << i; 
+			ch = ',';
+		}
 	ostr << "}";
 	return ostr;
 }
